@@ -11,6 +11,7 @@ A Sample N-layered .NET Core Project Demonstrating Clean Architecture and the Ge
 - Microsoft.EntityFrameworkCore.Design
 - Microsoft.EntityFrameworkCore.Tools
 - Npgsql.EntityFrameworkCore.PostgreSQL
+- Ardalis.Specification.EntityFrameworkCore
 
 ### Web
 - Microsoft.EntityFrameworkCore.Design
