@@ -59,7 +59,7 @@ namespace ApplicationCore.Services
 
         }
 
-        public async Task emptyBasketAsync(string buyerId)
+        public async Task EmptyBasketAsync(string buyerId)
         {
             var basket = await GetOrCreateBasketAsync(buyerId);
 
@@ -69,10 +69,7 @@ namespace ApplicationCore.Services
             }
         }
 
-        public Task<Basket> GetOrBasketAsync(string buyerId)
-        {
-            throw new NotImplementedException();
-        }
+        
 
         public async Task<Basket> GetOrCreateBasketAsync(string buyerId)
         {
