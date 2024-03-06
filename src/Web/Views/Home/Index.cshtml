@@ -1,11 +1,12 @@
 ﻿@model HomeViewModel
 @{
     ViewData["Title"] = "Home Page";
+    var pi = Model.PaginationInfo;
 }
 
 <div class="card mb-3">
     <div class="card-body">
-        <form asp-action="Index" method="get" class="row align-items-center">
+        <form asp-action="Index" method="get" class="row gx-2 align-items-center">
             <div class="col-auto">
                 <label>Category</label>
             </div>
@@ -43,28 +44,76 @@
                     <img src="~/img/products/@p.PictureUri" alt="@p.Name" class="w-100" />
 
                 </div>
-
                 <div class="product-name my-2 h6" title="@p.Name">
 
                     @p.Name
 
                 </div>
-
                 <div class="d-flex justify-content-between align-items-center">
 
                     @p.Price.ToString("c2")
 
                     <a href="#" class="btn btn-sm btn-success">
-
                         <i class="fa-solid fa-cart-plus"></i>
-
                     </a>
-
                 </div>
-
             </div>
-
         </div>
-
     }
 </div>
+
+<p class="text-center mt-2 text-secondary">
+    Showing @pi.RangeStart - @pi.RangeEnd of @pi.TotalItems
+</p>
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        @if (pi.HasPreviousPage)
+        {
+            <li class="page-item">
+                <a asp-route-categoryId="@Model.CategoryId" asp-route-brandId="@Model.BrandId" asp-route-pageId="@(pi.PageId - 1)" class="page-link" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item disabled">
+                <a class="page-link">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+        }
+
+        @foreach (var pageNumber in pi.PageNumbers)
+        {
+            if (pageNumber == -1)
+            {
+                <li class="page-item disabled"><a class="page-link">&hellip;</a></li>
+            }
+            else
+            {
+                <li class="page-item @(pageNumber == pi.PageId ? "active":"")">
+                    <a asp-route-categoryId="@Model.CategoryId" asp-route-brandId="@Model.BrandId" asp-route-pageId="@pageNumber" class="page-link">@pageNumber</a>
+                </li>
+            }
+        }
+
+        @if (pi.HasNextPage)
+        {
+            <li class="page-item">
+                <a asp-route-categoryId="@Model.CategoryId" asp-route-brandId="@Model.BrandId" asp-route-pageId="@(pi.PageId + 1)" class="page-link" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item disabled">
+                <a class="page-link">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        }
+    </ul>
+</nav>
