@@ -119,6 +119,7 @@
 </nav>
 
 @section Scripts {
+    <script src="sweetalert2.all.min.js"></script>
     <script>
         $("[data-add-item]").click(function (e) {
             e.preventDefault();
@@ -126,7 +127,8 @@
             const url = "@Url.Action("AddItem", "Basket")";
 
             $.post(url, { productId }).then(data => {
-                console.log(data);
+                successMessage("Item added to basket!");
+                $("#navbarBasketCount").text(data.totalItems);
             });
         });
     </script>
