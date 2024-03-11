@@ -18,5 +18,6 @@ namespace ApplicationCore.Interfaces
         Task EmptyBasketAsync(string buyerId);
 
         Task TransferBasketAsync(string buyerId, string destinationBuyerId);
+
     }
 }

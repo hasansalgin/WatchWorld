@@ -11,7 +11,7 @@
 
         <!--Grid column-->
         <div class="col-lg-8">
-
+            <form asp-action="Update">
             <!-- Card -->
             <div class="mb-3">
                 <div class="pt-4">
@@ -20,10 +20,26 @@
                         <h5 class="mb-4">Cart (<span>@Model.TotalItems</span> items)</h5>
 
                         <div>
-                            <a href="#" class="btn btn-sm btn-danger">Empty Cart</a>
+                            <button id="btnEmpty" type="button" class="btn btn-sm btn-danger">Empty Cart</button>
                             <button class="btn btn-sm btn-success ms-2">Update Cart</button>
                         </div>
                     </div>
+
+                    @if (Model.Items.Count == 0)
+                    {
+                        <div class="container mt-5">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="card-text text-center">
+                                    <i class="fa-solid display-1 fa-basket-shopping mt-5 text-black-50"> </i> 
+                                        <h2 class="mt-5">Your cart is currently empty!</h2>
+                                        <a asp-controller="Home" asp-action="Index" class="btn btn-primary mt-3">Return to Shop</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
 
                     @foreach (var item in Model.Items)
                     {
@@ -42,13 +58,13 @@
                                         </div>
                                         <div>
                                             <div class="number-input mb-0">
-                                                <input class="quantity form-control" min="1" value="@item.Quantity" type="number">
+                                                <input class="quantity form-control" min="1" name="quantities[@item.ProductId]" value="@item.Quantity" type="number">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div>
-                                            <a href="#!" type="button" class="text-decoration-none small text-uppercase me-3">
+                                            <a data-remove-id="@item.ProductId" href="#!" type="button" class="text-decoration-none small text-uppercase me-3">
                                                 <i class="fas fa-trash-alt me-1"></i> Remove item
                                             </a>
                                             <a href="#!" type="button" class="text-decoration-none small text-uppercase">
@@ -66,6 +82,7 @@
                 </div>
             </div>
             <!-- Card -->
+            </form>
         </div>
         <!--Grid column-->
         <!--Grid column-->
@@ -105,3 +122,42 @@
     <!-- Grid row -->
 
 </section>
+
+<form asp-action="Empty" id="frmEmpty"></form>
+<form asp-action="RemoveItem" id="frmRemoveItem">
+    <input type="hidden" name="productId" id="hdnProductId" />
+</form>
+
+@section Scripts { 
+
+    <script>
+        const message = "@TempData["Message"]";
+
+        if (message) {
+            successMessage(message);
+        }
+
+        $("#btnEmpty").click(function () {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, empty it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $("#frmEmpty").submit();
+                }
+            });
+        });
+
+        $("[data-remove-id]").click(function (e) {
+            e.preventDefault();
+            const productId = $(this).data("remove-id");
+            $("#hdnProductId").val(productId);
+            $("#frmRemoveItem").submit();
+        });
+    </script>
+}
