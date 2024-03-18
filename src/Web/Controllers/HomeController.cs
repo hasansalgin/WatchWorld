@@ -22,7 +22,7 @@ namespace Web.Controllers
             return View(vm);
         }
 
-        public IActionResult Privacy()
+        public IActionResult AboutUs()
         {
             return View();
         }
